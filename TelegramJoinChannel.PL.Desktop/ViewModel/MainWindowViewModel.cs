@@ -18,17 +18,17 @@ namespace TelegramJoinChannel.PL.Desktop.ViewModel
 {
     public class MainWindowViewModel : BaseViewModel
     {
-        private UnityContainer _container;
-        private ChannelsService _channelsService;
-        private CheckStatusService _checkStatusService;
+        private readonly UnityContainer _container;
+        private readonly ChannelsService _channelsService;
+        private readonly CheckStatusService _checkStatusService;
 
         private TelegramLogic _telegramLogic;
         private string _path;
         private string _numberPhone;
         private string _loginResult;
         private string _codeToAuthenticate;
-        private List<string> _files;
-        private List<ChannelsInfo> _updateChannelsBD;
+        private readonly List<string> _files;
+        private readonly List<ChannelsInfo> _updateChannelsBD;
 
         private DateTime _lastCheck;
         private int _noLinks;
@@ -279,15 +279,15 @@ namespace TelegramJoinChannel.PL.Desktop.ViewModel
                         FullUriCannel = InputUriChannel
                     };
 
-                    TLPhoto tLPhoto = tLChannelFullinfo.ChatPhoto as TLPhoto;
-                    if (tLPhoto != null)
-                        channelsInfo.AvatarChannel = DateTimeOffset.FromUnixTimeSeconds(tLPhoto.Date).DateTime;
-                    else
-                        channelsInfo.AvatarChannel = new DateTime(2000, 1, 1);
+                    channelsInfo.AvatarChannel = tLChannelFullinfo.ChatPhoto is TLPhoto tLPhoto
+                        ? DateTimeOffset.FromUnixTimeSeconds(tLPhoto.Date).DateTime
+                        : new DateTime(2000, 1, 1);
 
                     InfoChannels.Add(_channelsService.Create(channelsInfo));
-                    AddChannels addChannels = new AddChannels();
-                    addChannels.UriChannel = InputUriChannel;
+                    AddChannels addChannels = new AddChannels
+                    {
+                        UriChannel = InputUriChannel
+                    };
                     UriList.Add(addChannels);
                 }
                 catch (Exception)
@@ -320,8 +320,7 @@ namespace TelegramJoinChannel.PL.Desktop.ViewModel
                         break;
                     }
                 }
-                TLPhoto tLPhoto = item.ChatPhoto as TLPhoto;
-                if (tLPhoto != null)
+                if (item.ChatPhoto is TLPhoto tLPhoto)
                     channelsInfoTelegram.AvatarChannel = DateTimeOffset.FromUnixTimeSeconds(tLPhoto.Date).DateTime;
                 else
                     channelsInfoTelegram.AvatarChannel = new DateTime(2000, 1, 1);
@@ -330,7 +329,6 @@ namespace TelegramJoinChannel.PL.Desktop.ViewModel
             }
 
             string resultStatus = String.Empty;
-            string isUsable = String.Empty;
             foreach (var itemInfoChannels in InfoChannels)
             {
                 var isCheck = await _telegramLogic.CheckUriChannel(itemInfoChannels.AccessHashChannel, itemInfoChannels.IdChannel);
@@ -418,8 +416,7 @@ namespace TelegramJoinChannel.PL.Desktop.ViewModel
                         break;
                     }
                 }
-                TLPhoto tLPhoto = item.ChatPhoto as TLPhoto;
-                if (tLPhoto != null)
+                if (item.ChatPhoto is TLPhoto tLPhoto)
                     channelsInfo.AvatarChannel = DateTimeOffset.FromUnixTimeSeconds(tLPhoto.Date).DateTime;
                 else
                     channelsInfo.AvatarChannel = new DateTime(2000, 1, 1);

@@ -13,9 +13,5 @@ namespace TelegramJoinChannel.PL.Desktop.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        internal void AddRule(Func<string> p1, Func<bool> p2, string v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

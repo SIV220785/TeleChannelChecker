@@ -21,7 +21,7 @@ namespace TelegramJoinChannel.PL.Desktop
         private readonly TelegramClient _client;
 
         private readonly List<TLChannel> _cannels;
-        private List<TLChannelFull> _fullInfoCannels;
+        private readonly List<TLChannelFull> _fullInfoCannels;
 
         public TLUser User { get; set; }
 
@@ -36,7 +36,6 @@ namespace TelegramJoinChannel.PL.Desktop
             _apiId = 855982;
             _apiHash = "14371f08963c3662ddb83073194b971c";
             _client = new TelegramClient(_apiId, _apiHash, new CustomSessionStore(_numberPhone), _numberPhone);
-
             _cannels = new List<TLChannel>();
             _fullInfoCannels = new List<TLChannelFull>();
         }
@@ -100,10 +99,9 @@ namespace TelegramJoinChannel.PL.Desktop
 
         public async Task<bool> CheckUriChannel(long accessHash, int id)
         {
-            TLChatFull chan = new TLChatFull();
             try
             {
-                chan = await _client.SendRequestAsync<TLChatFull>(new TLRequestGetFullChannel()
+                TLChatFull chan = await _client.SendRequestAsync<TLChatFull>(new TLRequestGetFullChannel()
                 {
                     Channel = new TLInputChannel()
                     { ChannelId = id, AccessHash = accessHash }
