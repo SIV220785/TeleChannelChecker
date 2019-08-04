@@ -1,0 +1,505 @@
+﻿<Window x:Class="TelegramJoinChannel.PL.Desktop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ViewModel="clr-namespace:TelegramJoinChannel.PL.Desktop.ViewModel"
+        xmlns:DateConverter="clr-namespace:TelegramJoinChannel.PL.Desktop.Helper"
+        xmlns:local="clr-namespace:TelegramJoinChannel.PL.Desktop"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+
+    <Window.DataContext>
+        <ViewModel:MainWindowViewModel/>
+    </Window.DataContext>
+
+    <ContentControl.Resources>
+        <DateConverter:DateTimeToDateConverter x:Key="myDateConverter"/>
+        <Style TargetType="TextBox">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="25"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+    </ContentControl.Resources>
+
+    <Grid>
+        <TabControl>
+            <TabItem HorizontalContentAlignment="Stretch">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Authenticate"
+                                   Margin="10,0,10,0"
+                                   VerticalAlignment="Center"
+                                   FontSize="20"
+                                   FontWeight="Bold"/>
+                    </StackPanel>
+                </TabItem.Header>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="0"
+                               Margin="10"
+                               HorizontalAlignment="Center"
+                               Text="Введите номер телефона"
+                               FontSize="30"
+                               FontWeight="Bold">
+                    </TextBlock>
+                    <TextBox Grid.Column="0"
+                             Grid.Row="1"
+                             HorizontalAlignment="Center"
+                             Text="{Binding NumberPhone ,UpdateSourceTrigger=PropertyChanged}"
+                             Margin="10"
+                             Width="500">
+                    </TextBox>
+
+                    <Button Grid.Column="0"
+                            Grid.Row="2"
+                            Margin="10"
+                            Width="300"
+                            FontSize="30"
+                            FontWeight="Bold"
+                            Content="Authenticate"
+                            Command="{Binding Authenticate}"
+                            IsEnabled="{Binding IsAuthorisation, UpdateSourceTrigger=PropertyChanged}"/>
+
+
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="3"
+                               Margin="10"
+                               FontSize="30"
+                               HorizontalAlignment="Center"
+                               FontWeight="Bold"
+                               Text="{Binding LoginResult, UpdateSourceTrigger=PropertyChanged}">
+
+                    </TextBlock>
+                    <TextBox Grid.Column="0"
+                             Grid.Row="4"
+                             HorizontalAlignment="Center"
+                             Text="{Binding CodeToAuthenticate ,UpdateSourceTrigger=PropertyChanged}"
+                             Margin="10"
+                             IsEnabled="{Binding IsSetCode}"
+                             Width="500">
+                    </TextBox>
+
+                    <Button Grid.Column="0"
+                            Grid.Row="5"
+                            Margin="10"
+                            Width="300"
+                            FontSize="30"
+                            FontWeight="Bold"
+                            IsEnabled="{Binding IsSetCode}"
+                            Content="Set Code"
+                            Command="{Binding SetCode}">
+                    </Button>
+                </Grid>
+            </TabItem>
+
+            <TabItem HorizontalContentAlignment="Stretch">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Список каналов"
+                                   Margin="10,0,10,0"
+                                   VerticalAlignment="Center"
+                                   FontSize="20"
+                                   FontWeight="Bold"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition  Width="151*"/>
+                        <ColumnDefinition  Width="76*"/>
+                        <ColumnDefinition  Width="258*"/>
+                        <ColumnDefinition Width="44*"/>
+                        <ColumnDefinition  Width="151*"/>
+                        <ColumnDefinition  Width="106*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="8*"/>
+                        <RowDefinition Height="auto"/>
+                        <!--<RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>-->
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Column="4"
+                          Grid.Row="0"
+                          Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.2*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Column="0"
+                                   Grid.Row="0"
+                                   Grid.ColumnSpan="2"
+                                   Text="Последняя проверка">
+                        </TextBlock>
+
+                        <TextBlock Grid.Column="2"
+                                   Grid.Row="0"
+                                   HorizontalAlignment="Center"
+                                   Text="{Binding LastCheck, Converter={StaticResource myDateConverter}, UpdateSourceTrigger=PropertyChanged}">
+                        </TextBlock>
+
+                        <TextBlock Grid.Column="0"
+                                   Grid.Row="1"
+                                   Margin="5"
+                                   Background="Red">
+                        </TextBlock>
+
+                        <TextBlock Grid.Column="1"
+                                   Grid.Row="1"                                   
+                                   Text="Без ссылок">
+                        </TextBlock>
+
+                        <TextBlock Grid.Column="2"
+                                   Grid.Row="1"
+                                   HorizontalAlignment="Center"
+                                   Text="{Binding NoLinks, UpdateSourceTrigger=PropertyChanged}" Margin="53,0,53,12" Grid.RowSpan="2"/>
+
+                        <TextBlock Grid.Column="0"
+                                   Grid.Row="2"
+                                   Margin="5"
+                                   Background="Green">
+                        </TextBlock>
+
+                        <TextBlock Grid.Column="1"
+                                   Grid.Row="2"
+                                   Text="Измен. названия">
+                        </TextBlock>
+
+                        <TextBlock Grid.Column="2"
+                                   Grid.Row="2"
+                                   HorizontalAlignment="Center"
+                                   Text="{Binding ChangeTitles , UpdateSourceTrigger=PropertyChanged}">
+                        </TextBlock>
+
+                        <TextBlock Grid.Column="0"
+                                   Grid.Row="3"
+                                   Margin="5"
+                                   Background="Brown">
+                        </TextBlock>
+                        <TextBlock Grid.Column="1"
+                                   Grid.Row="3"
+                                   Text="Обновление аватара">
+                        </TextBlock>
+                        <TextBlock Grid.Column="2"
+                                   Grid.Row="3"
+                                   HorizontalAlignment="Center"
+                                   Text="{Binding UpdatedAvatar, UpdateSourceTrigger=PropertyChanged}">
+                        </TextBlock>
+                    </Grid>
+
+                    <DataGrid Grid.Column="0"
+                              Grid.Row="1"
+                              Grid.ColumnSpan="6"
+                              Margin="8"
+                              Name="dgChannels"
+                              ItemsSource="{Binding InfoChannels}">
+                    </DataGrid>
+
+                    <Button Grid.Column="2"
+                            Grid.Row="2"
+                            Content="Проверить"
+                            FontSize="20"
+                            FontWeight="Bold"
+                            Margin="5"
+                            Grid.ColumnSpan="2"
+                            Command="{Binding CheckAll}" >
+                    </Button>
+
+                    <Button Grid.Column="5"
+                            Grid.Row="2"
+                            Content="Обновить в БД"
+                            FontSize="10"
+                            FontWeight="Bold"
+                            Margin="5"
+                            Command="{Binding UpdateChannale}">
+                        
+                    </Button>
+                    <!--<Button Grid.Column="0"
+                            Grid.Row="2"
+                            Content="Проверить отмеченные"
+                            FontSize="10"
+                            FontWeight="Bold"
+                            Margin="5"
+                            Command="{Binding CheckMarked}">
+                    </Button>-->
+
+                    <!--<Button Grid.Column="0"
+                            Grid.Row="4"
+                            Content="Проверить все"
+                            FontSize="10"
+                            FontWeight="Bold"
+                            Margin="5"                           
+                            Command="{Binding }">
+                    </Button>-->
+
+                    <!--<TextBlock Grid.Column="0"
+                               Grid.Row="5"
+                               HorizontalAlignment="Center"
+                               FontSize="20"
+                               Text="Канал">
+                    </TextBlock>-->
+
+                    <!--<TextBox Grid.Column="1"
+                             Grid.Row="5"
+                             Grid.ColumnSpan="2"
+                             FontSize="20"
+                             Text="{Binding InputChannelName, UpdateSourceTrigger=PropertyChanged}">
+                    </TextBox>-->
+
+                    <!--<CheckBox Grid.Column="2"
+                              Grid.Row="2"
+                              FontSize="10"
+                              FontWeight="Bold" 
+                              Content="Ссылка не работает"
+                              IsChecked="{Binding IsLinkDoesNotWork,UpdateSourceTrigger=PropertyChanged}">
+                    </CheckBox>
+
+                    <CheckBox Grid.Column="2"
+                              Grid.Row="3"
+                              FontSize="10"
+                              FontWeight="Bold" 
+                              Content="Изменилось название"
+                              IsChecked="{Binding IsNameChanged,UpdateSourceTrigger=PropertyChanged}">
+                    </CheckBox>
+
+                    <CheckBox Grid.Column="2"
+                              Grid.Row="4"
+                              FontSize="10"
+                              FontWeight="Bold" 
+                              Content="Обновился аватар"
+                              IsChecked="{Binding IsUpdatedAvatar,UpdateSourceTrigger=PropertyChanged}">
+                    </CheckBox>-->
+
+                    <!--<Button Grid.Column="3"
+                            Grid.Row="3"
+                            Grid.ColumnSpan="2"
+                            Grid.RowSpan="2"
+                            Margin="60,10"
+                            Content="Поиск"
+                            FontSize="25"
+                            FontWeight="Bold"
+                            Command="{Binding Search}">
+                    </Button>-->
+                </Grid>
+
+            </TabItem>
+            <TabItem HorizontalContentAlignment="Stretch">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Добавить канал"
+                                   Margin="10,0,10,0"
+                                   VerticalAlignment="Center"
+                                   FontSize="20"
+                                   FontWeight="Bold"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                        <!--<RowDefinition Height="*"/>-->
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="0"
+                               Grid.ColumnSpan="4"
+                               HorizontalAlignment="Center"
+                               Margin="5"
+                               FontSize="25"
+                               FontWeight="Bold"                              
+                               Text="Список добавленных каналов:">
+                    </TextBlock>
+
+                    <ListBox Grid.Column="0"
+                             Grid.Row="1"
+                             Grid.ColumnSpan="4"
+                             Grid.RowSpan="5"
+                             Margin="15,5"
+                             ItemsSource="{Binding UriList}">
+                    </ListBox>
+
+                    <!--<Grid Grid.Column="0"
+                          Grid.Row="6"
+                          Grid.RowSpan="2"
+                          Grid.ColumnSpan="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="0.4*"/>
+                            <ColumnDefinition Width="0.2*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Column="3"
+                                   Grid.Row="0"
+                                   FontSize="15"
+                                   Grid.ColumnSpan="2"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"
+                                   Text="Название канала">
+                        </TextBlock>
+
+                        <TextBox Grid.Column="3"
+                                 Grid.Row="1"
+                                 Grid.ColumnSpan="3"
+                                 FontSize="15"
+                                 FontWeight="Normal"
+                                 HorizontalContentAlignment="Left"
+                                 Text="{Binding InputChannelName,UpdateSourceTrigger=PropertyChanged}">
+                        </TextBox>
+
+                        <TextBlock Grid.Column="0"
+                                   Grid.Row="0"
+                                   Grid.ColumnSpan="2"
+                                   FontSize="15"
+                                   FontWeight="Bold"                                   
+                                   Text="Успешно добавлены:">
+                        </TextBlock>
+
+                        <TextBlock Grid.Column="2"
+                                   Grid.Row="0"
+                                   HorizontalAlignment="Center"
+                                   FontSize="15"
+                                   FontWeight="Bold"
+                                   Text="{Binding SuccessfullyAdded,UpdateSourceTrigger=PropertyChanged}">
+                        </TextBlock>
+
+                        <TextBlock Grid.Column="0"
+                                   Grid.Row="1"
+                                   Grid.ColumnSpan="2"
+                                   FontSize="15"
+                                   FontWeight="Bold"                                   
+                                   Text="Не добавленные дубли:">
+                        </TextBlock>
+
+                        <TextBlock Grid.Column="2"
+                                   Grid.Row="1"
+                                   HorizontalAlignment="Center"
+                                   FontSize="15"
+                                   FontWeight="Bold"
+                                   Text="{Binding RepeatedChannel,UpdateSourceTrigger=PropertyChanged}">
+                        </TextBlock>
+
+                        <TextBlock Grid.Column="0"
+                                   Grid.Row="2"
+                                   Grid.ColumnSpan="2"
+                                   FontSize="15"
+                                   FontWeight="Bold"                                   
+                                   Text="Не удалось получить данные:">
+                        </TextBlock>
+
+                        <TextBlock Grid.Column="2"
+                                   Grid.Row="2"
+                                   HorizontalAlignment="Center"
+                                   FontSize="15"
+                                   FontWeight="Bold"
+                                   Text="{Binding FailedGetData,UpdateSourceTrigger=PropertyChanged}">
+                        </TextBlock>
+                    </Grid>-->
+
+                    <TextBlock Grid.Column="0"
+                                   Grid.Row="6"
+                                   FontSize="20"
+                                   FontWeight="Bold"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Text="Введите канал:">
+                    </TextBlock>
+
+                    <TextBox Grid.Column="1"
+                                 Grid.Row="6"
+                                 Grid.ColumnSpan="2"
+                                 FontSize="15"
+                                 FontWeight="Normal"
+                                 HorizontalContentAlignment="Left"
+                                 Text="{Binding InputUriChannel,UpdateSourceTrigger=PropertyChanged}">
+                    </TextBox>
+
+                    <Button Grid.Column="3"
+                            Grid.Row="6"
+                            Margin="10,5"
+                            FontSize="20"
+                            FontWeight="Bold"
+                            Content="Добавить"
+                            Command="{Binding AddChannel}">
+                    </Button>
+                </Grid>
+            </TabItem>
+
+            <TabItem HorizontalContentAlignment="Stretch">
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Статистика"
+                                   Margin="10,0,10,0"
+                                   VerticalAlignment="Center"
+                                   FontSize="20"
+                                   FontWeight="Bold"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.1*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               Grid.Row="0"
+                               HorizontalAlignment="Center"
+                               FontSize="25"
+                               FontWeight="Bold"
+                               Text="Статистика прошлых проверок">
+                    </TextBlock>
+
+                    <DataGrid Grid.Column="0"
+                              Grid.Row="1"
+                              Margin="30,10"
+                              ItemsSource="{Binding StatChannels}">
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
