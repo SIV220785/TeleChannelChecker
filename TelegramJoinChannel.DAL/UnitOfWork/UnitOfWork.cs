@@ -2,42 +2,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
+
 using TelegramJoinChannel.DAL.Contexts;
 using TelegramJoinChannel.DAL.Repositories.Base;
 using TelegramJoinChannel.DAL.UnitOfWork.Base;
+
 
 namespace TelegramJoinChannel.DAL.UnitOfWork
 {
     internal class UnitOfWork : IUnitOfWork
     {
 
-        private bool _disposed;
         private Hashtable _repositories;
         private readonly DbContext _dbContext;
 
-        public UnitOfWork()
+        public UnitOfWork(DbContext context)
         {
-            _dbContext = new TelegrambaseContext();
+            _dbContext = context;
             _dbContext.Configuration.LazyLoadingEnabled = false;
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+
         public void Commit()
         {
             _dbContext.SaveChanges();
         }
-        public virtual void Dispose(bool disposing)
-        {
-            if (!_disposed)
-                if (disposing)
-                    _dbContext.Dispose();
 
-            _disposed = true;
-        }
+
         public IRepository<TEntity> GetRepository<TEntity>() where TEntity : class
         {
             if (_repositories == null)
@@ -55,6 +46,33 @@ namespace TelegramJoinChannel.DAL.UnitOfWork
             return (GenericRepository<TEntity>)_repositories[type];
         }
 
+        #region GC
+        private bool _disposed;
 
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+        public virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+                if (disposing)
+                {
+                    _dbContext.Dispose();
+                    _repositories.Clear();
+                }
+                else
+                {
+                    _dbContext.Dispose();
+                }
+
+            _disposed = true;
+        }
+        ~UnitOfWork()
+        {
+            Dispose(false);
+        }
+        #endregion
     }
 }

@@ -142,7 +142,6 @@ namespace TelegramJoinChannel.PL.Desktop.ViewModel
             set { _isAuthorisation = value; OnPropertyChanged(); }
         }
 
-
         public string UriChannel
         {
             get { return _uriChannel; }
@@ -469,7 +468,6 @@ namespace TelegramJoinChannel.PL.Desktop.ViewModel
         private void OnSearch(object obj)
         {
             throw new NotImplementedException();
-
         }
     }
 }

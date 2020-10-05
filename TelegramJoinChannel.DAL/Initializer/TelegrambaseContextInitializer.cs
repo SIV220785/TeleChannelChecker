@@ -9,7 +9,7 @@ using TelegramJoinChannel.DAL.Entities;
 
 namespace TelegramJoinChannel.DAL.Initializer
 {
-    internal class TelegrambaseContextInitializer : DropCreateDatabaseAlways<TelegrambaseContext>
+    internal class TelegrambaseContextInitializer : CreateDatabaseIfNotExists<TelegrambaseContext>
     {
         protected override void Seed(TelegrambaseContext db)
         {

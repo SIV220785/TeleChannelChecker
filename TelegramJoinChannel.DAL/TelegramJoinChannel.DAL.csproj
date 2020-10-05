@@ -77,8 +77,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Base\GenericRepository.cs" />
     <Compile Include="Repositories\Base\IRepository.cs" />
-    <Compile Include="Repositories\ChannelsRepository.cs" />
-    <Compile Include="Repositories\CheckStatusRepository.cs" />
     <Compile Include="UnitOfWork\Base\IUnitOfWork.cs" />
     <Compile Include="UnitOfWork\UnitOfWork.cs" />
   </ItemGroup>

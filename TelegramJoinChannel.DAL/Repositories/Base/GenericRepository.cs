@@ -18,9 +18,9 @@ namespace TelegramJoinChannel.DAL.Repositories.Base
             Context = context;
         }
 
-        public virtual T Get(int id)
+        public async virtual Task<T> Get(int id)
         {
-            return Context.Set<T>().Find(id);
+            return await Context.Set<T>().FindAsync(id);
         }
         public virtual T GetIncluding(int id, params Expression<Func<T, object>>[] includeProperties)
         {
@@ -32,7 +32,6 @@ namespace TelegramJoinChannel.DAL.Repositories.Base
         }
         public virtual IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includeProperties)
         {
-
             IQueryable<T> queryable = GetAll();
             foreach (Expression<Func<T, object>> includeProperty in includeProperties)
             {
@@ -65,6 +64,7 @@ namespace TelegramJoinChannel.DAL.Repositories.Base
         {
             return Context.Set<T>().Where(match);
         }
+
         public virtual IQueryable<T> FindAllIncluding(Expression<Func<T, bool>> match, params Expression<Func<T, object>>[] includeProperties)
         {
             IQueryable<T> queryable = Context.Set<T>().Where(match);
@@ -73,7 +73,6 @@ namespace TelegramJoinChannel.DAL.Repositories.Base
             {
                 queryable = queryable.Include(includeProperty);
             }
-
             return queryable;
         }
         public virtual int Delete(T entity)
@@ -89,7 +88,6 @@ namespace TelegramJoinChannel.DAL.Repositories.Base
                 Context.Set<T>().Remove(entity);
                 return Context.SaveChanges();
             }
-
             return 0;
         }
         public virtual T Update(T t, object key)
